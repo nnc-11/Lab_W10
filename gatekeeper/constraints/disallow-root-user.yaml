@@ -1,3 +1,4 @@
+# Chặn Pod hoặc container chạy với runAsUser: 0 (root)
 apiVersion: templates.gatekeeper.sh/v1
 kind: ConstraintTemplate
 metadata:

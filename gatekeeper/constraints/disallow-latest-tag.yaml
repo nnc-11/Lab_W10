@@ -1,3 +1,4 @@
+# chặn container/initContainer dùng image tag :latest
 apiVersion: templates.gatekeeper.sh/v1
 kind: ConstraintTemplate
 metadata:

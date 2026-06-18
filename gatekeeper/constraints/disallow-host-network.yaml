@@ -1,3 +1,4 @@
+# chặn Pod bật hostNetwork: true
 apiVersion: templates.gatekeeper.sh/v1
 kind: ConstraintTemplate
 metadata:

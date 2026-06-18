@@ -1,3 +1,4 @@
+# bắt buộc container và initContainer phải có resource limits (cpu và memory)
 apiVersion: templates.gatekeeper.sh/v1
 kind: ConstraintTemplate
 metadata:

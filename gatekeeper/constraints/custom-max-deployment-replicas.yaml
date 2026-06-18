@@ -1,3 +1,4 @@
+# chặn Deployment có replicas >5
 apiVersion: templates.gatekeeper.sh/v1
 kind: ConstraintTemplate
 metadata:
