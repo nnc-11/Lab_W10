@@ -1,0 +1,61 @@
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: k8srequiredresourcelimits
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sRequiredResourceLimits
+      validation:
+        openAPIV3Schema:
+          type: object
+  targets:
+  - target: admission.k8s.gatekeeper.sh
+    rego: |
+      package k8srequiredresourcelimits
+
+      missing_limits(container) {
+        not container.resources.limits
+      }
+
+      missing_limits(container) {
+        not container.resources.limits.cpu
+      }
+
+      missing_limits(container) {
+        not container.resources.limits.memory
+      }
+
+      violation[{"msg": msg}] {
+        container := input.review.object.spec.containers[_]
+        missing_limits(container)
+        msg := sprintf("container <%v> must set resources.limits.cpu and resources.limits.memory", [container.name])
+      }
+
+      violation[{"msg": msg}] {
+        container := input.review.object.spec.initContainers[_]
+        missing_limits(container)
+        msg := sprintf("initContainer <%v> must set resources.limits.cpu and resources.limits.memory", [container.name])
+      }
+---
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sRequiredResourceLimits
+metadata:
+  name: require-resource-limits
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  enforcementAction: deny
+  match:
+    excludedNamespaces:
+    - kube-system
+    - argocd
+    - argo-rollouts
+    - monitoring
+    - gatekeeper-system
+    kinds:
+    - apiGroups: [""]
+      kinds: ["Pod"]
