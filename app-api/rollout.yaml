@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: ghcr.io/nnc-11/w10-api:0.0.1
+        image: ghcr.io/nnc-11/w10-api:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
